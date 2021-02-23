@@ -61,7 +61,7 @@ def decrypt_message(message, d, n):
     # Convert the string array into an integer array (based on ascii)
     # pow(ascii value of character, d, n) 
     # convert back to characters
-    # return the decryted message
+    # return the decrypted message
     decrypted = list()
     for i in range(len(message)):
         if isinstance(message[i], str):
@@ -97,7 +97,7 @@ def decrypt_signature(signature, e, n):
 
     # convert string array to integer array
     # (int^e)%n = decrypted signature
-    # return decryped signature
+    # return decrypted signature
     decrypted = list()
     for i in range(len(signature)):
         if isinstance(signature[i], str):
@@ -114,58 +114,64 @@ if __name__ == "__main__":
     # Create the private and public keys
     (p,q,n,f,e,d) = gen_keys()
 
-# Have the user choose between being a owner or public user
-    user = input("Are you a Owner(O) or a Public user(P): ")
+    user_expression = 'Y'
 
-# If Owner
-    if user == 'O':
+    while (user_expression == 'Y'):
 
-    # Prompt to either decrypt or create a digital signature
-        owner_user_choice = input("Would you like to decrypt(de) or create a digital signature(di): " )
+    # Have the user choose between being a owner or public user
+        user = input("Are you a Owner(O) or a Public user(P): ")
 
-    # If Decrypt message
-        if owner_user_choice == "de":
+    # If Owner
+        if user == 'O':
 
-        # Have a message that is either made by a public user or a preset message
-            owner_user_message = input("Please enter message that you would like to decrypt: ")
-        # Print the encrypted message
-            print("Encryted message: " + str(owner_user_message))
-        # Decrypt the message
-            decrypt_message(owner_user_message, d, n)
-        # Print the decrypted message
-            print("Decryted message: " + str(decrypted))
+        # Prompt to either decrypt or create a digital signature
+            owner_user_choice = input("Would you like to decrypt a message(de) or create a digital signature(di): ")
 
-    # If create a digital signature
-        if owner_user_choice == "di":
+        # If Decrypt message
+            if owner_user_choice == "de":
 
-        # Have the user enter a signature
-            owner_user_signature = input("Please enter digital signature that you would like to encrypt: ")
-        # Encrypt it with the private key
-            owner_user_signature = create_signature(owner_user_signature, d, n)
-        # Print signature that was created
-            print("Encryted signiture: " + str(owner_user_signature))
+            # Have a message that is either made by a public user or a preset message
+                owner_user_message = input("Please enter message that you would like to decrypt: ")
+            # Print the encrypted message
+                print("Encrypted message: " + str(owner_user_message))
+            # Decrypt the message
+                owner_user_message = decrypt_message(owner_user_message, d, n)
+            # Print the decrypted message
+                print("Decrypted message: " + str(owner_user_message))
 
-# If Public User
-    if user == 'P':
-    # Prompt to encrypt or verify signature
-        public_user_choice = input("Would you like to encrypt a message(m) or verify a signature(s)?")
+        # If create a digital signature
+            if owner_user_choice == "di":
 
-    # If Encrypt message
-        if public_user_choice == 'm':
+            # Have the user enter a signature
+                owner_user_signature = input("Please enter digital signature that you would like to encrypt: ")
+            # Encrypt it with the private key
+                owner_user_signature = create_signature(owner_user_signature, d, n)
+            # Print signature that was created
+                print("Encrypted signature: " + str(owner_user_signature))
 
-        # Have the user enter a message
-            public_user_message = input("Please enter a message that you would like to encrypt: ")
-        # Encrypt the message with the public key
-            encrypt_message(public_user_message, e, n)
-        # Print the encrypted message
-            print("Encryted message: " + str(public_user_message))
+    # If Public User
+        if user == 'P':
+        # Prompt to encrypt or verify signature
+            public_user_choice = input("Would you like to encrypt a message(m) or verify a signature(s)?")
 
-    # If Verify Signature
-        if public_user_choice == 's':
+        # If Encrypt message
+            if public_user_choice == 'm':
 
-        # Have an encrypted signature
-            public_user_signature = input("Please enter digital signature that you would like to decrypt: ")
-        # Decrypt the signature with the public key
-            public_user_signature = decrypt_signature(public_user_signature, e, n)
-        # Print out the decrypted signature
-            print("Decrypted signature: " + str(public_user_signature))
+            # Have the user enter a message
+                public_user_message = input("Please enter a message that you would like to encrypt: ")
+            # Encrypt the message with the public key
+                public_user_message = encrypt_message(public_user_message, e, n)
+            # Print the encrypted message
+                print("Encrypted message: " + str(public_user_message))
+
+        # If Verify Signature
+            if public_user_choice == 's':
+
+            # Have an encrypted signature
+                public_user_signature = input("Please enter digital signature that you would like to decrypt: ")
+            # Decrypt the signature with the public key
+                public_user_signature = decrypt_signature(public_user_signature, e, n)
+            # Print out the decrypted signature
+                print("Decrypted signature: " + str(public_user_signature))
+
+        user_expression = input("Is there anything else that you would like to do? (Y)Yes or (N)No: ")
