@@ -114,24 +114,6 @@ if __name__ == "__main__":
     # Create the private and public keys
     (p,q,n,f,e,d) = gen_keys()
 
-    print("P: "+ str(p))
-    print("Q: "+ str(q))
-    print("N: "+ str(n))
-    print("F: "+ str(f))
-    print("E: "+ str(e))
-    print("D: "+ str(d))
-
-    encrypted = encrypt_message("butts", e, n)
-    decrypted = decrypt_message(encrypted, d, n)
-    e_sig = create_signature("Alice", d, n)
-    v_sig = decrypt_signature(e_sig, e, n)
-
-    print("Encryted message: " + str(encrypted))
-    print("Decryted message: " + str(decrypted))
-    print("Encryted signiture: " + str(e_sig))
-    print("Decryted signiture: " + str(v_sig))
-    
-
 # Have the user choose between being a owner or public user
     user = input("Are you a Owner(O) or a Public user(P): ")
 
@@ -159,7 +141,9 @@ if __name__ == "__main__":
         # Have the user enter a signature
             owner_user_signature = input("Please enter digital signature that you would like to encrypt: ")
         # Encrypt it with the private key
-            create_signature(user_signature, d, n)
+            owner_user_signature = create_signature(owner_user_signature, d, n)
+        # Print signature that was created
+            print("Encryted signiture: " + str(owner_user_signature))
 
 # If Public User
     if user == 'P':
@@ -182,6 +166,6 @@ if __name__ == "__main__":
         # Have an encrypted signature
             public_user_signature = input("Please enter digital signature that you would like to decrypt: ")
         # Decrypt the signature with the public key
-            decrypt_signature(public_user_signature, e, n)
+            public_user_signature = decrypt_signature(public_user_signature, e, n)
         # Print out the decrypted signature
             print("Decrypted signature: " + str(public_user_signature))
