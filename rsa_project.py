@@ -114,6 +114,23 @@ if __name__ == "__main__":
     # Create the private and public keys
     (p,q,n,f,e,d) = gen_keys()
 
+    print("P: " + str(p))
+    print("Q: " + str(q))
+    print("N: " + str(n))
+    print("F: " + str(f))
+    print("E: " + str(e))
+    print("D: " + str(d))
+
+    encrypted = encrypt_message("butts", e, n)
+    decrypted = decrypt_message(encrypted, d, n)
+    e_sig = create_signature("Alice", d, n)
+    v_sig = decrypt_signature(e_sig, e, n)
+
+    print("Encryted message: " + str(encrypted))
+    print("Decryted message: " + str(decrypted))
+    print("Encryted signiture: " + str(e_sig))
+    print("Decryted signiture: " + str(v_sig))
+
     user_expression = 'Y'
 
     while (user_expression == 'Y'):
