@@ -14,7 +14,7 @@ def extended_gcd(a=1, b=1):
     return y, x-a//b*y, d 
 
 def gen_keys():
-    randoms = [rn.randint(1000, 10000) for i in range(100)]
+    randoms = [rn.randint(10000, 100000) for i in range(100)]
     primes = set()
     for i in range(5):
         for j in randoms:
@@ -26,7 +26,7 @@ def gen_keys():
     q = primes[1]
     n = p*q
     f = (p-1)*(q-1)
-    e = 3
+    e = 65537
     # Generate e
     for i in range(2, len(primes)):
         if math.gcd(primes[i], f) == 1:
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     print("E: " + str(e))
     print("D: " + str(d))
 
-    encrypted = encrypt_message("butts", e, n)
+    encrypted = encrypt_message("Encrypt", e, n)
     decrypted = decrypt_message(encrypted, d, n)
     e_sig = create_signature("Alice", d, n)
     v_sig = decrypt_signature(e_sig, e, n)
@@ -140,55 +140,45 @@ if __name__ == "__main__":
 
     # If Owner
         if user == 'O':
-
         # Prompt to either decrypt or create a digital signature
             owner_user_choice = input("Would you like to decrypt a message(de) or create a digital signature(di): ")
-
         # If Decrypt message
             if owner_user_choice == "de":
-
-            # Have a message that is either made by a public user or a preset message
-                owner_user_message = input("Please enter message that you would like to decrypt: ")
-            # Print the encrypted message
-                print("Encrypted message: " + str(owner_user_message))
-            # Decrypt the message
-                owner_user_message = decrypt_message(owner_user_message, d, n)
-            # Print the decrypted message
+                # Have a message that is either made by a public user or a preset message
+                # Print the encrypted message
+                print("Encrypted message: " + str(encrypted))
+                # Decrypt the message
+                owner_user_message = decrypt_message(encrypted, d, n)
+                # Print the decrypted message
                 print("Decrypted message: " + str(owner_user_message))
-
         # If create a digital signature
-            if owner_user_choice == "di":
-
-            # Have the user enter a signature
+            elif owner_user_choice == "di":
+                # Have the user enter a signature
                 owner_user_signature = input("Please enter digital signature that you would like to encrypt: ")
-            # Encrypt it with the private key
-                owner_user_signature = create_signature(owner_user_signature, d, n)
-            # Print signature that was created
-                print("Encrypted signature: " + str(owner_user_signature))
+                # Encrypt it with the private key
+                e_sig = create_signature(owner_user_signature, d, n)
+                # Print signature that was created
+                print("Encrypted signature: " + str(e_sig))
 
     # If Public User
-        if user == 'P':
-        # Prompt to encrypt or verify signature
+        elif user == 'P':
+            # Prompt to encrypt or verify signature
             public_user_choice = input("Would you like to encrypt a message(m) or verify a signature(s)?")
-
-        # If Encrypt message
+            # If Encrypt message
             if public_user_choice == 'm':
-
-            # Have the user enter a message
+                # Have the user enter a message
                 public_user_message = input("Please enter a message that you would like to encrypt: ")
-            # Encrypt the message with the public key
-                public_user_message = encrypt_message(public_user_message, e, n)
-            # Print the encrypted message
-                print("Encrypted message: " + str(public_user_message))
+                # Encrypt the message with the public key
+                encrypted = encrypt_message(public_user_message, e, n)
+                # Print the encrypted message
+                print("Encrypted message: " + str(encrypted))
 
-        # If Verify Signature
-            if public_user_choice == 's':
-
-            # Have an encrypted signature
-                public_user_signature = input("Please enter digital signature that you would like to decrypt: ")
-            # Decrypt the signature with the public key
-                public_user_signature = decrypt_signature(public_user_signature, e, n)
-            # Print out the decrypted signature
+            # If Verify Signature
+            elif public_user_choice == 's':
+                # Have an encrypted signature
+                # Decrypt the signature with the public key
+                public_user_signature = decrypt_signature(e_sig, e, n)
+                # Print out the decrypted signature
                 print("Decrypted signature: " + str(public_user_signature))
 
         user_expression = input("Is there anything else that you would like to do? (Y)Yes or (N)No: ")
