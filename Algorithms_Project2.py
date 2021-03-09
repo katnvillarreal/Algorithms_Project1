@@ -16,9 +16,22 @@ def bubble(numbers):
     # Worst Case (Already Sorted highest to lowest)
 
     # INSERT ALGORITHM HERE
+    n = len(numbers)
+
+    # traverse through all array elements
+    for i in range(n-1):
+    # range(n) also work but outer loop will repeat one more time than needed.
+
+            for j in range(0, n-i-1):
+
+                # traverse the array from 0 to n-i-1
+                # Swap if the element found is greater than the next element
+                if numbers[j] > numbers[j+1]:
+                    numbers[j], numbers[j+1] = numbers[j+1], numbers[j]
+
 
     # Return sorted array
-    return 0
+    return numbers
 
 # Merge Sort
 def merge(numbers):
@@ -49,16 +62,59 @@ def best_quick(numbers):
     # Return sorted array
     return 0
 
-# Tree Sort
-def tree(numbers):
+#   Counting sort function for radix sort
+
+def countingSort(numbers, exp):
+    n = len(numbers)
+
+    # The output array elements that will have sorted arr
+    output = [0] * (n)
+
+    # initialize count array as 0
+    count = [0] * (10)
+
+    # Store count of occurrences in count[]
+    for i in range(0, n):
+        index = (numbers[i] / exp)
+        count[int(index % 10)] += 1
+
+    # Change count[i] so that count[i] now contains actual
+    # position of this digit in output array
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+
+        # Build the output array
+    i = n - 1
+    while i >= 0:
+        index = (numbers[i] / exp)
+        output[count[int(index % 10)] - 1] = numbers[i]
+        count[int(index % 10)] -= 1
+        i -= 1
+
+    # Copying the output array to arr[],
+    # so that arr now contains sorted numbers
+    i = 0
+    for i in range(0, len(arr)):
+        numbers[i] = output[i]
+
+    return numbers
+
+    # Radix Sort
+def radix(numbers):
     # Best Case
     # Average Case
     # Worst Case
 
     # INSERT ALGORITHM HERE
+    max1 = max(numbers)
+
+    exp = 1
+    while max1 / exp > 0:
+        countingSort(numbers, exp)
+        exp *= 10
 
     # Return sorted array
-    return 0
+    return numbers
 
 def rand_array():
     # Generate an array with length between 100000 to 1000000
@@ -124,11 +180,11 @@ def average_case(numbers, file_name):
     f.write("Sorted Array: " + sorted + "\n\n")
 
     srt = time.time()
-    # Test Tree sort with random array
-    sorted = tree(numbers)
+    # Test Radix sort with random array
+    sorted = radix(numbers)
     t = time.time()-srt
     # Write to file
-    f.write("Tree Sort Time: " + str(t))
+    f.write("Radix Sort Time: " + str(t))
     f.write("Array Length: " + str(sorted.len()))
     f.write("Sorted Array: " + sorted + "\n\n")
 
@@ -167,10 +223,10 @@ def best_case(numbers, file_name):
 
     srt = time.time()
     # Test Tree sort with (????) array
-    sorted = tree(numbers)
+    sorted = radix(numbers)
     t = time.time()-srt
     # Write to file
-    f.write("Tree Sort Time: " + str(t))
+    f.write("Radix Sort Time: " + str(t))
     f.write("Array Length: " + str(sorted.len()))
     f.write("Sorted Array: " + sorted + "\n\n")
 
@@ -209,10 +265,10 @@ def worst_case(numbers, file_name):
 
     srt = time.time()
     # Test Tree sort with (??????) array
-    sorted = tree(numbers)
+    sorted = radix(numbers)
     t = time.time()-srt
     # Write to file
-    f.write("Tree Sort Time: " + str(t))
+    f.write("Radix Sort Time: " + str(t))
     f.write("Array Length: " + str(sorted.len()))
     f.write("Sorted Array: " + sorted + "\n\n")
 
