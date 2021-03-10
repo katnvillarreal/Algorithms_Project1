@@ -133,7 +133,7 @@ def radix(numbers):
 
 def rand_array():
     # Generate an array with length between 100000 to 1000000
-    length = rn.randint(100000, 10000000)
+    length = rn.randint(500, 1000)
     # Fill the array with random integers
     rand_array = [rn.randint(0, 1000000) for i in range(length)]
     # return the generated array
@@ -141,7 +141,7 @@ def rand_array():
 
 def ascending():
     # Generate an array with length between 100000 to 1000000
-    length = rn.randint(100000, 10000000)
+    length = rn.randint(500, 1000)
     # have the array be filled with numbers in ascending order
     asc_array = [i for i in range(length)]
     # return generated array
@@ -149,7 +149,7 @@ def ascending():
 
 def descending():
     # Generate an array with length between 100000 to 1000000
-    length = rn.randint(100000, 10000000)
+    length = rn.randint(500, 1000)
     # have the array be filled with numbers in descending order
     desc_array = [(length-i) for i in range(length)]
     # return generated array
