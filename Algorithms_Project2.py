@@ -33,24 +33,17 @@ def merge(numbers):
 
     # INSERT ALGORITHM HERE
     if len(numbers) > 1:
-
         # Finding the mid of the array
         mid = len(numbers) // 2
-
         # Dividing the array elements
         L = numbers[:mid]
-
         # into 2 halves
         R = numbers[mid:]
-
         # Sorting the first half
         merge(L)
-
         # Sorting the second half
         merge(R)
-
         i = j = k = 0
-
         # Copy data to temp arrays L[] and R[]
         while i < len(L) and j < len(R):
             if L[i] < R[j]:
@@ -66,14 +59,12 @@ def merge(numbers):
             numbers[k] = L[i]
             i += 1
             k += 1
-
         while j < len(R):
             numbers[k] = R[j]
             j += 1
             k += 1
     # Return sorted array
-    emptylist = list()
-    return emptylist
+    return numbers
 
 # Partition function for quick sort
 def partition(arr, start, end): 
@@ -171,7 +162,7 @@ def radix(numbers):
 
 def rand_array():
     # Generate an array with length between 100000 to 1000000
-    length = rn.randint(500, 1000)
+    length = 850 #rn.randint(10000, 100000)
     # Fill the array with random integers
     rand_array = [rn.randint(0, 1000000) for i in range(length)]
     # return the generated array
@@ -179,7 +170,7 @@ def rand_array():
 
 def ascending():
     # Generate an array with length between 100000 to 1000000
-    length = rn.randint(500, 1000)
+    length = 850 #rn.randint(10000, 100000)
     # have the array be filled with numbers in ascending order
     asc_array = [i for i in range(length)]
     # return generated array
@@ -187,7 +178,7 @@ def ascending():
 
 def descending():
     # Generate an array with length between 100000 to 1000000
-    length = rn.randint(500, 1000)
+    length = 850 #rn.randint(10000, 100000)
     # have the array be filled with numbers in descending order
     desc_array = [(length-i) for i in range(length)]
     # return generated array
@@ -241,7 +232,7 @@ def average_case(numbers, file_name):
     return 0
 
 def best_case(numbers, file_name):
-    f = open(file_name, "a")
+    f = open(file_name, "w")
     f.write("Best Case for Algorithms\n")
     f.close()
 
