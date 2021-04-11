@@ -24,8 +24,11 @@ def dfs(g):
                     stack.append((neighbor, path + [neighbor]))
         
     def main(g):
-        v = dfs_path(g, 'A', 'B')
-        print (v)
+        path = dfs_path(g, 'A', 'B')
+        if path:
+            print(path)
+        else:
+            print('no path found')
     main(g)
 
 def bfs(g):
@@ -160,7 +163,7 @@ def q2():
         '2': set(['1']),
         '3': set(['2','5']),
         '4': set(['1','2','12']),
-        '5': set(['5','8']),
+        '5': set(['6','8']),
         '6': set(['7','8','10']),
         '7': set(['10']),
         '8': set(['9','10']),
