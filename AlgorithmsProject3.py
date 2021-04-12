@@ -6,10 +6,13 @@ import time
 import heapq
 from itertools import groupby
 from collections import defaultdict
+import collections
 
 # Question 1 ############################################################################
 # Undirected and Unweighted
 # Both DFS and BFS
+
+# Reference code for dfs by UTD Xue Kris Yu
 def dfs(g):
     def dfs_path(graph, start, goal):
         stack = [(start, [start])]
@@ -31,6 +34,9 @@ def dfs(g):
             print('no path found')
     main(g)
 
+''' The modified script for bfs is contributed by Maarten Fabre available at
+https://codereview.stackexchange.com/questions/193410/breadth-first-search-implementation-in-python-3-to-find-path-between-two-given-n
+'''
 def bfs(g):
     def bfs_path(graph, start, goal):
         if start == goal:
@@ -79,6 +85,10 @@ def q1():
 # Question 2 ############################################################################################################
 # Directed and unweighted
 # Find the strongly connected components
+
+# modified script for strongly connected components from original script
+#https://github.com/ChuntaoLu/Algorithms-Design-and-
+#Analysis/blob/master/week4%20Graph%20search%20and%20SCC/scc.py#L107
 
 #set rescursion limit and stack size limit
 sys.setrecursionlimit(10 ** 6)
@@ -187,15 +197,77 @@ def q2():
 # Question 3
 # Undirected and weighted
 # Dijkstra's
-# A: (B,22), (C,9), (D,12)
-# B: (A,22), (C,35), (F,36), (H,34)
-# C: (A,9), (B,35), (F,42), (E,65), (D,4)
-# D: (A,12), (C,4), (E,33), (I,30)
-# E: (C,65), (D,33), (F,18), (G,23)
-# F: (B,36), (C,42), (E,18), (G,39), (H,24)
-# G: (E,23), (F,39), (H,25), (I,21)
-# H: (B,34), (F,24), (G,25), (I,19)
-# I: (D,30), (G,21), (H,19)
+
+def q3():
+    # Python implementation of Dijkstra's algorithm
+    #https://gist.github.com/econchick/4666413
+    class Graph:
+        def __init__(self):
+            self.nodes = set()
+            self.edges = collections.defaultdict(list)
+            self.distances = {}
+
+        def add_node(self, value):
+            self.nodes.add(value)
+
+        def add_edge(self, from_node, to_node, distance):
+            self.edges[from_node].append(to_node)
+            self.edges[to_node].append(from_node)
+            self.distances[(from_node, to_node)] = distance
+                                        
+    def dijkstra(graph, initial):
+        visited = {initial: 0}
+        path = {}
+
+        nodes = set(graph.nodes)
+
+        while nodes: 
+            min_node = None
+            for node in nodes:
+                if node in visited:
+                    if min_node is None:
+                        min_node = node
+                    elif visited[node] < visited[min_node]:
+                        min_node = node
+
+            if min_node is None:
+                break
+
+            nodes.remove(min_node)
+            current_weight = visited[min_node]
+
+            for edge in graph.edges[min_node]:
+                weight = current_weight + graph.distance[(min_node, edge)]
+                if edge not in visited or weight < visited[edge]:
+                    visited[edge] = weight
+                    path[edge] = min_node
+
+        return visited, path
+
+    def main():
+        graph = Graph()
+        graph.nodes = {'A','B','C','D','E','F','G','H','I'}
+        graph.edges = {'A': ['B', 'C', 'D'], 'B':['A','C', 'F', 'H'], \
+                'C':['A', 'B', 'D', 'F', 'E'], 'D':['A', 'C', 'E', 'I'],\
+                'E': ['C', 'D', 'F', 'G'], 'F':['B', 'C', 'E', 'G', 'H'],\
+                'F':['B', 'C', 'E', 'G', 'H'], 'G':['E', 'F', 'H', 'I'], \
+                'H':['B', 'F', 'G', 'I'], 'I':['D', 'G', 'H']}
+        graph.distance = {('A', 'B'):22, ('A', 'C'):9, ('A', 'D'):12,\
+                    ('B', 'A'):22, ('B', 'C'):35, ('B', 'F'):36, ('B', 'H'):34,\
+                    ('C', 'A'):9, ('C', 'B'):35, ('C', 'D'):4, ('C', 'E'):65, ('C', 'F'):42,\
+                    ('D', 'A'):12, ('D', 'C'):4, ('D', 'E'):33, ('D', 'I'):30,\
+                    ('E', 'C'):65, ('E', 'D'):33, ('E', 'F'):18, ('E', 'G'):23, \
+                    ('F', 'B'):36, ('F', 'C'):42, ('F', 'E'):18, ('F', 'G'):39, ('F', 'H'):24,\
+                    ('G', 'E'):23, ('G', 'F'):39, ('G', 'H'):25, ('G', 'I'):21,\
+                    ('H', 'B'):34, ('H', 'F'):24, ('H', 'G'):25, ('H', 'I'):21,\
+                    ('I', 'D'):30, ('I', 'G'):21, ('I', 'H'):19,
+                   }
+
+        v, path = dijkstra(graph, 'A')
+        print('Visited: ', v)
+        print('Path :', path)
+
+    main()
 
 if __name__ == "__main__":
     q1()
@@ -203,3 +275,4 @@ if __name__ == "__main__":
     print('Strongly connected components are:')
     for key in components:
         print(components[key])
+    q3()
