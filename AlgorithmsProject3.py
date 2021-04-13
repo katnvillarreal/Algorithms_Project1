@@ -7,6 +7,7 @@ import heapq
 from itertools import groupby
 from collections import defaultdict
 import collections
+from heapq import *
 
 # Question 1 ############################################################################
 # Undirected and Unweighted
@@ -29,7 +30,7 @@ def dfs(g):
     def main(g):
         path = dfs_path(g, 'A', 'B')
         if path:
-            print(path)
+            print("DFS: ",path)
         else:
             print('no path found')
     main(g)
@@ -57,7 +58,7 @@ def bfs(g):
     def main(g):
         path = bfs_path(g, 'A', 'B')
         if path:
-            print(path)
+            print("BFS: ", path)
         else:
             print('no path found')
     main(g)
@@ -87,8 +88,8 @@ def q1():
 # Find the strongly connected components
 
 # modified script for strongly connected components from original script
-#https://github.com/ChuntaoLu/Algorithms-Design-and-
-#Analysis/blob/master/week4%20Graph%20search%20and%20SCC/scc.py#L107
+# https://github.com/ChuntaoLu/Algorithms-Design-and-
+# Analysis/blob/master/week4%20Graph%20search%20and%20SCC/scc.py#L107
 
 #set rescursion limit and stack size limit
 sys.setrecursionlimit(10 ** 6)
@@ -196,11 +197,11 @@ def q2():
 
 # Question 3
 # Undirected and weighted
-# Dijkstra's
+# Dijkstra's and prim's
 
 def q3():
     # Python implementation of Dijkstra's algorithm
-    #https://gist.github.com/econchick/4666413
+    # https://gist.github.com/econchick/4666413
     class Graph:
         def __init__(self):
             self.nodes = set()
@@ -244,7 +245,32 @@ def q3():
 
         return visited, path
 
+    def prim( nodes, edges ):
+        # Python implementation of prims algorithm 
+        # https://programmingpraxis.com/2010/04/09/minimum-spanning-tree-prims-algorithm/
+        conn = defaultdict( list )
+        for n1,n2,c in edges:
+            conn[ n1 ].append( (c, n1, n2) )
+            conn[ n2 ].append( (c, n2, n1) )
+ 
+        mst = []
+        used = set( [nodes[ 0 ]] )
+        usable_edges = conn[ nodes[0] ][:]
+        heapify( usable_edges )
+ 
+        while usable_edges:
+            cost, n1, n2 = heappop( usable_edges )
+            if n2 not in used:
+                used.add( n2 )
+                mst.append( ( n1, n2, cost ) )
+ 
+                for e in conn[ n2 ]:
+                    if e[ 2 ] not in used:
+                        heappush( usable_edges, e )
+        return mst
+
     def main():
+        print("Dijkstra's Algorithm")
         graph = Graph()
         graph.nodes = {'A','B','C','D','E','F','G','H','I'}
         graph.edges = {'A': ['B', 'C', 'D'], 'B':['A','C', 'F', 'H'], \
@@ -260,19 +286,31 @@ def q3():
                     ('F', 'B'):36, ('F', 'C'):42, ('F', 'E'):18, ('F', 'G'):39, ('F', 'H'):24,\
                     ('G', 'E'):23, ('G', 'F'):39, ('G', 'H'):25, ('G', 'I'):21,\
                     ('H', 'B'):34, ('H', 'F'):24, ('H', 'G'):25, ('H', 'I'):21,\
-                    ('I', 'D'):30, ('I', 'G'):21, ('I', 'H'):19,
-                   }
+                    ('I', 'D'):30, ('I', 'G'):21, ('I', 'H'):19}
 
         v, path = dijkstra(graph, 'A')
         print('Visited: ', v)
         print('Path :', path)
 
     main()
+    nodes = list("ABCDEFGHI")
+    edges = [("A", "B", 22), ("A", "C", 9), ("A", "D", 12), \
+            ("B", "C", 35), ("B", "F", 36), ("B", "H", 34),\
+            ("C", "D", 4), ("C", "E", 65), ("C", "F", 42),\
+            ("D", "E", 33), ("D", "I", 9),\
+            ("E", "F", 18), ("E", "G", 23),\
+            ("F", "G", 39), ("F", "H", 24),\
+            ("G", "H", 25), ("G", "I", 21), ("H", "I", 21),]
+ 
+    print ("Prim's Algorithm\n", prim( nodes, edges ))
 
 if __name__ == "__main__":
+    print("Question 1")
     q1()
+    print("\n\nQuestion 2")
     count, components = q2()
     print('Strongly connected components are:')
     for key in components:
         print(components[key])
+    print("\n\nQuestion 3")
     q3()
